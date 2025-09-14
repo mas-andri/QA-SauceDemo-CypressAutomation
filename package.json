@@ -1,0 +1,20 @@
+{
+  "name": "qa-saucedemo-cypressautomation",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/mas-andri/QA-SauceDemo-CypressAutomation#readme",
+  "bugs": {
+    "url": "https://github.com/mas-andri/QA-SauceDemo-CypressAutomation/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mas-andri/QA-SauceDemo-CypressAutomation.git"
+  },
+  "license": "ISC",
+  "author": "Margono Andri Hastiko",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
