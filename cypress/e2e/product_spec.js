@@ -1,81 +1,35 @@
 /// <reference types="cypress" />
+import ProductPage from "../support/pageObject/ProductPage";
 
-describe("Login page test", () => {
+describe("Product Page Test Scenarios", () => {
   const url = "https://www.saucedemo.com/";
 
-  beforeEach(() => {
+  beforeEach(function () {
     cy.visit(url);
-    cy.get("#user-name").type("standard_user");
-    cy.get("#password").type("secret_sauce");
-    cy.get("#login-button").click();
+    cy.login("standard_user", "secret_sauce");
     cy.get(".title").should("contain", "Products");
+
+    this.productPage = new ProductPage();
   });
 
-  it("Should display all products", () => {
+  it("Should show all products", () => {
     cy.get(".inventory_item").should("have.length.at.least", 6);
   });
 
-  it("Should sort products by product name A-Z", () => {
-    // get initial product name
-    let productNames = [];
-
-    cy.get(".inventory_item_name")
-      .each(($el) => {
-        cy.log("product name:", $el.text());
-        productNames.push($el.text());
-      })
-      .then(() => {
-        // sort intial product name A-Z
-        const sortedProduct = [...productNames].sort();
-        // filter by product name A-Z
-        cy.get(".product_sort_container").select("az");
-        // verify product name sorted from A - Z
-        cy.get(".inventory_item_name").each(($el, index) => {
-          expect($el.text()).to.equal(sortedProduct[index]);
-        });
-      });
+  it("Should sort products by product name A-Z", function () {
+    this.productPage.sortByName("az");
   });
 
-  it("Should sort products by product name Z-A", () => {
-    // get initial product name
-    let productNames = [];
-
-    cy.get(".inventory_item_name")
-      .each(($el) => {
-        cy.log("product name:", $el.text());
-        productNames.push($el.text());
-      })
-      .then(() => {
-        // sort intial product name Z-A
-        const sortedProduct = [...productNames].sort().reverse();
-        cy.get(".product_sort_container").select("za");
-        // verify product name sorted from Z - A
-        cy.get(".inventory_item_name").each(($el, index) => {
-          expect($el.text()).to.equal(sortedProduct[index]);
-        });
-      });
+  it("Should sort products by product name Z-A", function () {
+    this.productPage.sortByName("za");
   });
 
-  it("Should sort products by price low - high", () => {
-    cy.get(".product_sort_container").select("lohi");
-    cy.get(".inventory_item_price").then((prices) => {
-      const priceValues = [...prices].map(($el) =>
-        Number($el.innerText.replace("$", ""))
-      );
-      const sortedValues = [...priceValues].sort((a, b) => a - b);
-      expect(priceValues).to.deep.equal(sortedValues);
-    });
+  it("Should sort products by price low - high", function () {
+    this.productPage.sortByPrice("lohi");
   });
 
-  it("Should sort products by price high to low", () => {
-    cy.get(".product_sort_container").select("hilo");
-    cy.get(".inventory_item_price").then((prices) => {
-      const priceValues = [...prices].map(($el) =>
-        Number($el.innerText.replace("$", ""))
-      );
-      const sortedValues = [...priceValues].sort((a, b) => b - a);
-      expect(priceValues).to.deep.equal(sortedValues);
-    });
+  it("Should sort products by price high to low", function () {
+    this.productPage.sortByPrice("hilo");
   });
 
   it("Should allow user to view product details", () => {
@@ -92,13 +46,10 @@ describe("Login page test", () => {
 
   it("Should add a product to the cart", () => {
     const addToCartButton = cy.get("#add-to-cart-sauce-labs-backpack");
-    if (addToCartButton) {
-      cy.get("#add-to-cart-sauce-labs-backpack").click();
-      cy.get(".shopping_cart_badge").should("contain", "1");
-    } else {
+    if (!addToCartButton) {
       cy.get("#remove-sauce-labs-backpack").click();
-      cy.get("#add-to-cart-sauce-labs-backpack").click();
-      cy.get(".shopping_cart_badge").should("contain", "1");
     }
+    cy.get("#add-to-cart-sauce-labs-backpack").click();
+    cy.get(".shopping_cart_badge").should("contain", "1");
   });
 });

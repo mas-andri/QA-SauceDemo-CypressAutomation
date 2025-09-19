@@ -1,57 +1,41 @@
 /// <reference types="cypress" />
+import ProductPage from "../support/pageObject/ProductPage";
+import CheckoutPage from "../support/pageObject/CheckoutPage";
 
-describe("Checkout page test scenarios", () => {
+describe("Test Scenarios for the Checkout Page", () => {
   const url = "https://www.saucedemo.com/";
-  beforeEach(() => {
+  beforeEach(function () {
     cy.visit(url);
-    cy.get("#user-name").type("standard_user");
-    cy.get("#password").type("secret_sauce");
-    cy.get("#login-button").click();
-    cy.get(".title").should("contain", "Products");
+    cy.login("standard_user", "secret_sauce");
 
     // add product to card
-    cy.get("#add-to-cart-sauce-labs-backpack").click();
-    cy.get(".shopping_cart_link").click();
+    const productPage = new ProductPage();
+    productPage.addProductToCart(["#add-to-cart-sauce-labs-backpack"]);
 
     // go to checkout page
     cy.get("#checkout").click();
     cy.url().should("include", "/checkout-step-one.html");
+
+    this.checkoutPage = new CheckoutPage();
   });
 
-  it("Should display error when first name is blank", () => {
-    cy.get("#last-name").type("Plankton");
-    cy.get("#postal-code").type("12345");
-    cy.get("#continue").click();
-    cy.get('[data-test="error"]')
-      .should("be.visible")
-      .and("contain", "First Name is required");
+  it("Should display an error when the first name is blank", function () {
+    this.checkoutPage.checkoutForm(undefined, "Plankton", "123321");
+    this.checkoutPage.formErrorMessage("First Name is required");
   });
 
-  it("Should display error when Last Name is missing", () => {
-    cy.get("#first-name").type("Sheldon");
-    cy.get("#postal-code").type("12345");
-    cy.get("#continue").click();
-
-    cy.get('[data-test="error"]')
-      .should("be.visible")
-      .and("contain", "Error: Last Name is required");
+  it("Should display an error when the last name is missing", function () {
+    this.checkoutPage.checkoutForm("Sheldon", undefined, "123321");
+    this.checkoutPage.formErrorMessage("Last Name is required");
   });
 
-  it("Should display error when Postal Code is missing", () => {
-    cy.get("#first-name").type("Sheldon");
-    cy.get("#last-name").type("J Plankton");
-    cy.get("#continue").click();
-
-    cy.get('[data-test="error"]')
-      .should("be.visible")
-      .and("contain", "Error: Postal Code is required");
+  it("Should display an error when the postal code is missing", function () {
+    this.checkoutPage.checkoutForm("Sheldon", "Plankton");
+    this.checkoutPage.formErrorMessage("Postal Code is required");
   });
 
-  it("Should complete the checkout process successfully", () => {
-    cy.get("#first-name").type("Sheldon");
-    cy.get("#last-name").type("J Plankton");
-    cy.get("#postal-code").type("12345");
-    cy.get("#continue").click();
+  it("Should successfully complete the checkout process", function () {
+    this.checkoutPage.checkoutForm("Sheldon", "Plankton", "123456");
 
     cy.url().should("include", "/checkout-step-two.html");
     cy.contains("Checkout: Overview");
