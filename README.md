@@ -2,6 +2,10 @@
 
 SauceDemo is a web-based e-commerce demo application created by Sauce Labs for practicing and testing software quality assurance, automation, and performance testing. The application simulates a simple online store where users can log in, browse products, add items to a cart, sort products, proceed through a checkout process, and log out.
 
+## Reports and Documentation
+
+This section provides direct access to detailed testing documents, including the Test Plan, Test Scenarios, Test Cases, and Bug Reports. Each document outlines the testing approach, execution details, and identified issues throughout the testing process.
+
 Website URL: https://www.saucedemo.com
 
 - [Test Plan](https://docs.google.com/document/d/1K6Uy9S0fTBt9BNnOB806961vkUsOdrP_85xaJaBhA7I/edit?usp=sharing)
