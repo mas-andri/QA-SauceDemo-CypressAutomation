@@ -22,9 +22,13 @@ Website URL: https://www.saucedemo.com
 
     git clone https://github.com/mas-andri/QA-SauceDemo-CypressAutomation.git
 
+&nbsp;
+
 #### Step 2 — Install Dependencies
 
     npm install
+
+&nbsp;
 
 #### Step 3 — Run Cypress
 
@@ -33,6 +37,8 @@ Website URL: https://www.saucedemo.com
 If you want to run Cypress in headless mode using the Chrome browser
 
     npx cypress run --browser chrome
+
+&nbsp;
 
 #### Step 4 - Opening the Mochawesome Report
 
