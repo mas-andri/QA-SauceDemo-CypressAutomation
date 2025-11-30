@@ -2,9 +2,9 @@
 import ProductPage from "../support/pageObject/ProductPage";
 
 describe("Test Scenarios for the Cart Page", () => {
-  const url = "https://www.saucedemo.com/";
+  // const url = "https://www.saucedemo.com/";
   beforeEach(function () {
-    cy.visit(url);
+    cy.visit("/");
     cy.login("standard_user", "secret_sauce");
 
     this.btnIdSelector = ["#add-to-cart-sauce-labs-backpack"];

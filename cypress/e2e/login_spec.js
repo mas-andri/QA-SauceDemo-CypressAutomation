@@ -1,10 +1,10 @@
 /// <reference types="cypress" />
 
 describe("Login page test", () => {
-  const url = "https://www.saucedemo.com/";
+  // const url = "https://www.saucedemo.com/";
 
   beforeEach(() => {
-    cy.visit(url);
+    cy.visit("/");
   });
 
   // Negative Test Cases
